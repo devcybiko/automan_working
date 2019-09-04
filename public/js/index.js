@@ -50,10 +50,12 @@ function refreshCars() {
   //location.reload();
   console.log("inventoryselect "+inventorySelect)
   if (inventorySelect ==='I') {
-    $.get("/");   //load up inventory only
+    //$.get("/");   //load up inventory only
+    document.location = '/';
   } 
   else {
-    $.get("/api/cars"); //load up sold vehicles
+    //$.get("/api/cars"); //load up sold vehicles
+    document.location = '/api/cars';
   }
 
 }
