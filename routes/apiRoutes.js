@@ -4,52 +4,55 @@ module.exports = function (app) {
 
   // Load index page
   app.get("/", function (req, res) {
-    db.Car.findAll({
-      include: [db.Customer]
-    }).then(function (dbCars) {
-      res.render("index", {
-        cars: dbCars
+    db.Car.findAll(
+      {
+        include: [db.Customer],
+        where: {
+          sold: false
+        }
+      }).then(function (dbCars) {
+        res.render("index", {
+          cars: dbCars
+        });
       });
-    });
   });
 
-  app.get("/api/cars/:id", function (req, res) {
-    db.Car.findAll({
-      include: [db.Customer],
-      where: {
-        CustomerId: {
+  app.get("/api/cars", function (req, res) {
+    db.Car.findAll(
+      {
+        include: [db.Customer],
+        where: {
+          sold: true
+        }
+      }).then(function (dbCars) {
+        res.render("index2", {
+          cars: dbCars
+        });
+      });
+  });
+
+  /*  Catalog.find({where:
+      {id: itemId},
+      include: {
+          model: models.ProductCategory, 
+          where: {
+            language_id: {$col: 'Catalog.language_id'}
+          }
+      }
+  })
+    /*  where: {
+        transaction_id: {
+          // "$eq" changes to "[Op.eq]"
           [Op.eq]: null
         }
-      }
-    }).then(function (dbCars) {
-      res.render("index", {
-        cars: dbCars
-      });
-    });
-  });
-
-/*  Catalog.find({where:
-    {id: itemId},
-    include: {
-        model: models.ProductCategory, 
-        where: {
-          language_id: {$col: 'Catalog.language_id'}
+        Model.findAll({
+     where: {
+        id: {
+          [Op.or]: [1234, null]
         }
-    }
-})
-  /*  where: {
-      transaction_id: {
-        // "$eq" changes to "[Op.eq]"
-        [Op.eq]: null
-      }
-      Model.findAll({
-   where: {
-      id: {
-        [Op.or]: [1234, null]
-      }
-   }
-});
-  }*/
+     }
+  });
+    }*/
 
   // Create a new car
   app.post("/api/cars", function (req, res) {

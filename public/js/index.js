@@ -11,6 +11,7 @@ var $carDate = $("#car-date");
 //var $submitBtn = $("#submit-car");
 //var $carList = $("#car-list");
 var customerSelect = $("#car-customer");
+var inventorySelect = 'I';    //this is whether to display those in inventory, or those sold, or all
 
 // The API object contains methods for each kind of request we'll make
 var API = {
@@ -24,12 +25,12 @@ var API = {
       data: JSON.stringify(car)
     });
   },
-  getCars: function (id) {
+/*  getCars: function (id) {
     return $.ajax({
       url: "api/cars/"+id,
       type: "GET"
     });
-  },
+  },*/
   deleteCar: function (id) {
     return $.ajax({
       url: "api/cars/" + id,
@@ -46,7 +47,15 @@ var API = {
 };
 
 function refreshCars() {
-  location.reload();
+  //location.reload();
+  console.log("inventoryselect "+inventorySelect)
+  if (inventorySelect ==='I') {
+    $.get("/");   //load up inventory only
+  } 
+  else {
+    $.get("/api/cars"); //load up sold vehicles
+  }
+
 }
 // handleDeleteBtnClick is called when an car's delete button is clicked
 // Remove the car from the db and refresh the list
@@ -111,24 +120,18 @@ $(document).ready(function () {
       id: carID,
       price: price,
       datesold: dateSold,
-      CustomerId: customerId
+      CustomerId: customerId,
+      sold: true
     };
     console.log("car " + JSON.stringify(car))
-    alert("updating sold")
-    /*    if (!(car.price && car.datesold)) {
-          return;
-        }*/
     //reset
     $("#car-price").val("");
     $("#car-date").val("");
     //will always be an update when sold.
     API.updateCar(car).then(function () {
     });
-    //refreshCars();
-
     $("#soldModal").hide();
-    //$submitBtn.val("");
-    //$carList.val("");
+    refreshCars();
   });
 
   //record the sale
@@ -171,9 +174,8 @@ $(document).ready(function () {
       API.updateCar(car).then(function () {
       });
     }
-    //refreshCars();
      $("#carModal").hide();
-     $.get("/");
+     refreshCars();
 
   });
 
@@ -286,8 +288,7 @@ $(document).ready(function () {
    //app.get(`/cars/`+$(this).val())
     //API.getCars($(this).val());
     event.preventDefault();
-    console.log("/api/cars/"+$(this).val())
-    $.get("/api/cars/"+$(this).val());
-    //alert($(this).val());
+    inventorySelect = $(this).val()
+    refreshCars();
   });
 });
