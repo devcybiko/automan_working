@@ -6,10 +6,7 @@ module.exports = function (app) {
   app.get("/", function (req, res) {
     db.Car.findAll(
       {
-        include: [db.Customer],
-        where: {
-          sold: false
-        }
+        include: [db.Customer]
       }).then(function (dbCars) {
         res.render("index", {
           cars: dbCars

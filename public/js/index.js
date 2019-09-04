@@ -88,7 +88,7 @@ function renderCustomerList(data) {
   console.log(rowsToAdd);
   console.log(customerSelect);
   customerSelect.append(rowsToAdd);
-  //customerSelect.val(CustomerId);
+ // customerSelect.val(CustomerId);
 }
 
 // Creates the author options in the dropdown
@@ -176,9 +176,7 @@ $(document).ready(function () {
     }
      $("#carModal").hide();
      refreshCars();
-
   });
-
 
 
   // Add event listeners to the submit, edit, and delete buttons
@@ -210,8 +208,9 @@ $(document).ready(function () {
     $("#submitSold").attr("carID", carID);
     //set to their current values in case updating
     $("#car-price").val($(`#price${carID}`).text());
-    $("#car-date").val($(`#date${carID}`).text());
-    $("#car-customer").val($(`#car-customer${carID}`).text());
+    $("#car-date").val($(`#datesold${carID}`).text());
+    customerSelect.val($(`#customer${carID}`).text());
+    //$("#car-customer").val($(`#customer${carID}`).val());
     $("#soldModal").show();
   });
 
